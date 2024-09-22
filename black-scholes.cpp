@@ -19,12 +19,26 @@ class BlackScholesModel{
             this->d1 = (log(S0/K) + (r + 0.5 * sigma * sigma) * T) / (sigma * sqrt(T));
             this->d2 = d1 - sigma * sqrt(T);
         }
+
+        void update(double S0, double K, double r, double sigma, double T){
+            this->S0 = S0;
+            this->K = K;
+            this->r = r;
+            this->sigma = sigma;
+            this->T = T;
+            this->d1 = (log(S0/K) + (r + 0.5 * sigma * sigma) * T) / (sigma * sqrt(T));
+            this->d2 = d1 - sigma * sqrt(T);
+        }
+
         double getCallPrice(){
             return S0 * normalCDF(d1) - K * exp(-r * T) * normalCDF(d2);
         }
+        
         double getPutPrice(){
             return K * exp(-r * T) * normalCDF(-d2) - S0 * normalCDF(-d1);
         }
+
+    private:
         double normalCDF(double x){
             return 0.5 * erfc(-x/sqrt(2));
         }
